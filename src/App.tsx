@@ -1,149 +1,108 @@
-@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
+import { useEffect } from "react";
+import "./App.css";
+import bgCanvas from "./bgCanvas.js";
+import heroCanvas from "./heroCanvas.js";
 
+function App() {
+  useEffect(() => {
+    bgCanvas();
+    heroCanvas();
 
-body {
-  margin: 0;
-  background-color: black; /* background behind everything */
-  color: white;
-  overflow-y: auto;
+    const typingEl = document.querySelector(".typing-container");
+    const textEl = document.querySelector(".typing-text");
+    const overlayEl = document.querySelector(".black-overlay");
+    const secondTypingEl = document.querySelector(".second-typing-container");
+    const secondTextEl = document.querySelector(".second-typing-text");
+
+    const timer = setTimeout(() => {
+      if (typingEl) typingEl.classList.add("typed-done");
+    }, 3600);
+
+    const handleScroll = () => {
+      if (!typingEl || !overlayEl || !textEl) return;
+      const scrollY = window.scrollY;
+      const scrollLimit = 200;
+
+      // Move title to top-left
+      if (scrollY > 20) {
+        typingEl.classList.add("move-to-corner");
+        textEl.textContent = "RetroCruit";
+      } else {
+        typingEl.classList.remove("move-to-corner");
+        textEl.textContent = "Hi, welcome to RetroCruit.";
+      }
+
+      // Fade overlay
+      const opacity = Math.min(scrollY / scrollLimit, 1);
+      overlayEl.style.opacity = String(opacity);
+
+      // When user scrolls past 90% of first screen -> trigger 2nd typing
+      if (scrollY > window.innerHeight * 0.9 && secondTypingEl && secondTextEl) {
+        if (!secondTypingEl.classList.contains("active")) {
+          secondTypingEl.classList.add("active");
+          startSecondTyping(secondTextEl);
+        }
+      }
+    };
+
+    const startSecondTyping = (el: Element) => {
+      const fullText =
+        "I am an interview chatbot here to help strengthen your skills, ready to get better?";
+      let i = 0;
+      const typingSpeed = 50;
+
+      const type = () => {
+        if (i < fullText.length) {
+          el.textContent += fullText.charAt(i);
+          i++;
+          setTimeout(type, typingSpeed);
+        } else {
+          // After full sentence typed, wait 10s, then delete
+          setTimeout(() => backspace(), 10000);
+        }
+      };
+
+      const backspace = () => {
+        const current = el.textContent || "";
+        if (current.length > 0) {
+          el.textContent = current.slice(0, -1);
+          setTimeout(backspace, 30);
+        }
+      };
+
+      type();
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <div className="App">
+      {/* Background layers */}
+      <canvas className="canvas-2"></canvas>
+      <canvas className="canvas"></canvas>
+
+      {/* Black overlay */}
+      <div className="black-overlay"></div>
+
+      {/* Top typing */}
+      <div className="typing-container">
+        <h1 className="typing-text">Hi, welcome to RetroCruit.</h1>
+      </div>
+
+      {/* Second typing */}
+      <div className="second-typing-container">
+        <h1 className="second-typing-text"></h1>
+      </div>
+
+      {/* Content for scrolling */}
+      <div className="content"></div>
+    </div>
+  );
 }
 
-.App {
-  position: relative;
-  overflow: visible;
-  text-align: center;
-  height: 100vh;
-}
-
-/* ✅ Keep particles visible */
-.canvas-2 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  z-index: 0; /* was -2 */
-  opacity: 0.4;
-}
-
-.canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  z-index: 1; /* was -1 */
-  opacity: 0.8;
-}
-
-/* ✅ Page content */
-.content {
-  position: relative;
-  z-index: 2;
-  color: white;
-  background: transparent;
-  height: 200vh; 
-}
-.content::after {
-  content: "Scroll ↓";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2rem;
-  opacity: 0.5;
-}
-.typing-container {
-  position: fixed;
-  top: 25%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  font-family: "Michroma", sans-serif;
-  font-size: 1.2rem; 
-  color: #BD0927;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 2px solid #BD0927; /* thinner cursor */
-  width: 0;
-  animation: typing 3.5s steps(30, end) forwards, blink 0.75s step-end infinite;
-}
-
-/* Keyframes for typing */
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width:55ch; 
-  }
-}
-
-
-@keyframes blink {
-  50% {
-    border-color: transparent;
-  }
-}
-
-/* When scrolled — move to top-left corner */
-.move-to-corner {
-  position: fixed;
-  top: 1.5rem;
-  left: 2rem;
-  transform: none;
-  background: transparent;
-  border: none;
-  font-size: 1rem;
-  color: white;
-  transition: all 0.8s ease-in-out;
-  width: auto !important;
-  animation: none; /* stop typing animation */
-  border-right: none; /* remove cursor */
-}
-
-/* Smooth fade controlled dynamically from JS */
-.black-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: black;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  z-index: 1.5;
-}
-
-.black-overlay.visible {
-  opacity: 1; /* fully black */
-}
-
-.second-typing-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  font-family: "Michroma", sans-serif;
-  font-size: 0.5rem;
-  color: #bd0927;
-  white-space: nowrap;
-  overflow: hidden;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-.second-typing-container.active {
-  opacity: 1;
-}
-
-.second-typing-text {
-  border-right: 2px solid #bd0927;
-  animation: blink 0.75s step-end infinite;
-}
-
-
+export default App;
