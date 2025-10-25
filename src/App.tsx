@@ -1,34 +1,35 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import "./App.css";
+import bgCanvas from "./bgCanvas.js";      // background dots
+import heroCanvas from "./heroCanvas.js";  // hero (foreground) dots
 
 function App() {
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<string[]>([]);
+  useEffect(() => {
+    bgCanvas();
+    heroCanvas();
 
-  const handleSend = () => {
-    if (!input.trim()) return;
-    setMessages([...messages, `🧑 You: ${input}`, "🤖 Bot: Interesting! Tell me more."]);
-    setInput("");
-  };
+    // Remove blinking cursor after typing ends
+    const timer = setTimeout(() => {
+      const el = document.querySelector(".typing-container");
+      if (el) el.classList.add("typed-done");
+    }, 3600);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="app">
-      <h1>💬 InterviewBot</h1>
-      <div className="chat-box">
-        {messages.map((msg, i) => (
-          <p key={i}>{msg}</p>
-        ))}
+    <div className="App">
+      {/* Background and hero layers */}
+      <canvas className="canvas-2"></canvas>
+      <canvas className="canvas"></canvas>
+
+      {/* Typing animation overlay */}
+      <div className="typing-container">
+        <h1 className="typing-text">Hi, welcome to RetroCruit.</h1>
       </div>
 
-      <div className="input-area">
-        <input
-          type="text"
-          placeholder="Type your response..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
-        />
-        <button onClick={handleSend}>Send</button>
+      {/* Main content */}
+      <div className="content">
+        {/* Add your buttons, sections, etc. later */}
       </div>
     </div>
   );
