@@ -1,0 +1,82 @@
+.conversation-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: black;
+  color: white;
+  flex-direction: column;
+  text-align: center;
+}
+
+.retrocruit-top {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  font-size: 1.2rem;
+  color: #00ffff;
+  cursor: pointer;
+  text-shadow: 0 0 8px cyan;
+}
+
+.typing-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.typing-subtext {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.next-btn {
+  background: transparent;
+  border: 1px solid #00ffff;
+  color: #00ffff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.next-btn:hover {
+  background: #00ffff;
+  color: black;
+}
+
+/* ✅ Upload Box */
+.upload-box {
+  border: 2px dashed #00ffff;
+  padding: 2rem;
+  width: 400px;
+  margin: 2rem auto 0;
+  border-radius: 10px;
+  text-align: center;
+  opacity: 0; /* start hidden */
+  transition: opacity 1.5s ease;
+}
+
+.upload-box input {
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+/* ✅ Fade-in animation */
+.fade-in {
+  opacity: 1;
+  animation: fadeIn 1.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
