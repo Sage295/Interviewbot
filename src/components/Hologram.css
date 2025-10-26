@@ -1,0 +1,128 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
+
+/* --- Base Button --- */
+.btn {
+  position: relative;
+  width: 100%;
+  padding: 2rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  font-family: "Inter", sans-serif;
+}
+
+/* --- Hologram Wrapper --- */
+.hologram-wrapper {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  pointer-events: none;
+  width: 25%;
+  max-width: 350px;
+}
+
+/* ✅ Aligned placements */
+.hologram-left {
+  left: 10%;
+}
+
+.hologram-right {
+  right: 10%;
+}
+
+/* When visible */
+.hologram-wrapper.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --- Hologram Style --- */
+.hologram {
+  border: 2px solid rgba(0, 255, 255, 0.5);
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+}
+
+.hologram span {
+  position: relative;
+  display: inline-block;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+}
+
+/* Glitch layers */
+.hologram span::before,
+.hologram span::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  filter: blur(1px);
+}
+
+.hologram span::before {
+  top: -2px;
+  color: #ff00ff;
+  animation: glitch 2s infinite;
+}
+
+.hologram span::after {
+  bottom: -2px;
+  color: #00ffff;
+  animation: glitch 2s infinite reverse;
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translateX(0); opacity: 0.3; }
+  20% { transform: translateX(-5px); opacity: 0.5; }
+  40% { transform: translateX(5px); opacity: 0.7; }
+  60% { transform: translateX(-3px); opacity: 0.5; }
+  80% { transform: translateX(3px); opacity: 0.3; }
+}
+
+/* Scan line */
+.scan-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(0, 255, 255, 0.8), transparent);
+  top: 0;
+  animation: scan 2s linear infinite;
+  filter: blur(1px);
+}
+
+@keyframes scan {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+/* Hover glow */
+.hologram:hover {
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+}
+
+/* Subtitle */
+.hologram-subtitle {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: "Michroma", sans-serif;
+  line-height: 1.4rem;
+  white-space: normal;
+  word-wrap: break-word;
+  text-align: center;
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.3);
+}
+.hologram-right {
+  transform: translateY(-50%) scale(1.01);
+}
