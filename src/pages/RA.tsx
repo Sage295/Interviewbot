@@ -1,68 +1,94 @@
-import React from "react";
-import "./About.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./RA.css"; // (renamed from Conversation.css for clarity)
 
-const techLinks = [
-  {
-    name: "React",
-    url: "https://react.dev",
-    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-  },
-  {
-    name: "TypeScript",
-    url: "https://www.typescriptlang.org/",
-    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
-  },
-  {
-    name: "CSS",
-    url: "https://developer.mozilla.org/en-US/docs/Web/CSS",
-    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
-  },
-  {
-    name: "Vite",
-    url: "https://vitejs.dev/",
-    logo: "https://vitejs.dev/logo.svg",
-  },
-];
+const ResumeAnalyzer: React.FC = () => {
+  const firstText = " Welcome to Resume Analyzer";
+  const secondText =
+    "  Upload your resume to receive personalized insights, detailed analysis, and tailored advice to strengthen your professional profile.";
 
-const About: React.FC = () => {
+  const [mainText, setMainText] = useState("");
+  const [subText, setSubText] = useState("");
+  const [step, setStep] = useState<1 | 2>(1);
+  const [showNext, setShowNext] = useState(false);
+  const [showRetro, setShowRetro] = useState(false);
+  const [showUploadBox, setShowUploadBox] = useState(false);
+
+  const navigate = useNavigate();
+
+  const goToSkillBuilder = () => navigate("/skillbuilder");
+
+  // --- Typing animation logic ---
+  useEffect(() => {
+    let index = 0;
+    const textToType = step === 1 ? firstText : secondText;
+
+    if (step === 1) {
+      setMainText("");
+      setShowRetro(true);
+    } else {
+      setSubText("");
+    }
+
+    setShowNext(false);
+
+    const typeChar = () => {
+      if (index < textToType.length) {
+        if (step === 1) {
+          setMainText((prev) => prev + textToType.charAt(index));
+        } else {
+          setSubText((prev) => prev + textToType.charAt(index));
+        }
+        index++;
+        setTimeout(typeChar, 60);
+      } else {
+        if (step === 1) {
+          setShowNext(true);
+        } else {
+          // ✅ Once second text finishes, show upload box after slight delay
+          setTimeout(() => setShowUploadBox(true), 500);
+        }
+      }
+    };
+
+    const startTimer = setTimeout(typeChar, 200);
+    return () => clearTimeout(startTimer);
+  }, [step]);
+
+  const handleNext = () => {
+    setShowNext(false);
+    setStep(2);
+  };
+
   return (
-    <div className="about-page">
-      <div className="about-container">
-        <h1 className="about-title">About This Project</h1>
-        <p className="about-intro">
-          We designed <span className="highlight">RetroCruit</span> to empower students to practice, grow, and walk into every interview feeling ready to win.
-        </p>
+    <>
+      {showRetro && (
+        <span className="retrocruit-top" onClick={goToSkillBuilder}>
+          RetroCruit
+        </span>
+      )}
 
-        <p className="about-body">
-        For tech students who’ve struggled to find the best interview tips, boost confidence, and figure out how to actually shine when it matters most.
-        Our goal? To make an interview prep bot where you can practice, learn, and grow into your best professional self, all in one interactive space.
-        </p>
+      <div className="conversation-page">
+        <div className="conversation-center">
+          <h1 className="typing-title">{mainText}</h1>
 
-        <h2 className="about-subtitle"> Technologies Used</h2>
+          {step === 2 && <p className="typing-subtext">{subText}</p>}
 
-        <ul className="tech-buttons">
-          {techLinks.map((tech) => (
-            <li key={tech.name}>
-              {[...Array(5)].map((_, i) => (
-                <span
-                  key={i}
-                  onClick={() => window.open(tech.url, "_blank")}
-                  style={{ cursor: "pointer" }}
-                >
-                  <img
-                    src={tech.logo}
-                    alt={tech.name}
-                    className="tech-logo"
-                    draggable="false"
-                  />
-                </span>
-              ))}
-            </li>
-          ))}
-        </ul>
+          {showNext && (
+            <button className="next-btn" onClick={handleNext}>
+              Next →
+            </button>
+          )}
+          {showUploadBox && (
+            <div className="upload-box fade-in">
+              <p>Drag & drop your resume here or click to upload</p>
+              <input type="file" accept=".pdf,.doc,.docx" />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default About;
+export default ResumeAnalyzer;
