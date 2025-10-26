@@ -3,30 +3,27 @@
 
 body {
   margin: 0;
+  font-family: "Michroma", sans-serif;
   background-color: black; /* background behind everything */
   color: white;
   overflow-y: auto;
+  overflow-x: hidden;
 }
+
+.fade-text .typing-container {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
 
 .App {
   position: relative;
   overflow: visible;
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
-/* ✅ Keep particles visible */
-.canvas-2 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  z-index: 0; /* was -2 */
-  opacity: 0.4;
-}
-
+.canvas-2,
 .canvas {
   position: fixed;
   top: 0;
@@ -34,9 +31,20 @@ body {
   width: 100%;
   height: 100%;
   display: block;
-  z-index: 1; /* was -1 */
+  pointer-events: none;
+}
+
+
+.canvas-2 {
+  z-index: 0;
+  opacity: 0.4;
+}
+
+.canvas {
+  z-index: 1;
   opacity: 0.8;
 }
+
 
 /* ✅ Page content */
 .content {
@@ -46,15 +54,30 @@ body {
   background: transparent;
   height: 200vh; 
 }
-.content::after {
-  content: "Scroll ↓";
-  position: absolute;
-  top: 50%;
+.scroll-arrow {
+  position: fixed;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 2rem;
-  opacity: 0.5;
+  font-family: "Michroma", sans-serif;
+  font-size: 1.5rem;
+  color: #BD0927;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  z-index: 9999;
+  pointer-events: none;
 }
+
+.scroll-arrow.visible {
+  opacity: 0.7;
+  animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50%      { transform: translate(-50%, -50%) translateY(10px); }
+}
+
 .typing-container {
   position: fixed;
   top: 25%;
@@ -66,9 +89,11 @@ body {
   color: #BD0927;
   white-space: nowrap;
   overflow: hidden;
-  border-right: 2px solid #BD0927; /* thinner cursor */
+ border-right: 2px solid #BD0927;
   width: 0;
-  animation: typing 3.5s steps(30, end) forwards, blink 0.75s step-end infinite;
+  animation: typing 3.5s steps(30, end) forwards;
+
+
 }
 
 /* Keyframes for typing */
@@ -83,20 +108,23 @@ body {
 
 
 @keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
   50% {
-    border-color: transparent;
+    opacity: 0.2;
   }
 }
 
 /* When scrolled — move to top-left corner */
 .move-to-corner {
   position: fixed;
-  top: 1.5rem;
+  top: 0rem;
   left: 2rem;
   transform: none;
   background: transparent;
   border: none;
-  font-size: 1rem;
+  font-size: 0.6rem;
   color: white;
   transition: all 0.8s ease-in-out;
   width: auto !important;
@@ -121,7 +149,7 @@ body {
 .black-overlay.visible {
   opacity: 1; /* fully black */
 }
-
+/* The second typing text + cursor wrapper */
 .second-typing-container {
   position: fixed;
   top: 50%;
@@ -129,21 +157,68 @@ body {
   transform: translate(-50%, -50%);
   z-index: 9999;
   font-family: "Michroma", sans-serif;
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   color: #bd0927;
-  white-space: nowrap;
-  overflow: hidden;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  white-space: pre-wrap;
+  word-wrap: break-word;
   opacity: 0;
   transition: opacity 1s ease-in-out;
 }
 
+/* Fade in when triggered by JS */
 .second-typing-container.active {
   opacity: 1;
 }
 
+/* The text itself (no fake cursor) */
 .second-typing-text {
-  border-right: 2px solid #bd0927;
-  animation: blink 0.75s step-end infinite;
+  display: inline;
+  border: none;
+  animation: none;
+  white-space: pre-wrap;
+  vertical-align: baseline;
 }
 
+/* Real blinking cursor */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 3em;
+  background: #bd0927;
+  margin-left: 2px;
+  animation: blink 0.75s step-end infinite;
+  vertical-align: -0.2em; /* aligns cursor with last line of text */
+}
+
+/* Hide cursor when done typing */
+.typing-cursor.hidden {
+  opacity: 0;
+}
+/* --- Vertical Divider --- */
+.vertical-divider {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100%;
+  background-color: white;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.vertical-divider.visible {
+  opacity: 1;
+}
+
+/* Active cursor follows typing */
+.typing-cursor.active {
+  opacity: 1;
+  animation: blink 0.75s step-end infinite;
+}
 
