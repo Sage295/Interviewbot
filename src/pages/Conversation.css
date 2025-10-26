@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
+
+.conversation-page {
+  height: 100vh;
+  width: 100vw;
+  background: radial-gradient(circle at center, #0f0f1f, #000);
+  color: white;
+  font-family: "Michroma", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.retrocruit-top {
+  position: fixed; /* stays at the top-left of the screen */
+  top: 3%;
+  left: 5%;
+  font-size: 1rem;
+  color: rgba(0, 255, 200, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 12px rgba(0, 255, 200, 0.4);
+  animation: fadeIn 1.5s ease-out forwards;
+  z-index: 100; /* ensures it floats above other elements */
+}
+/* Center container */
+.conversation-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === Main typing text === */
+.typing-title {
+  font-size: 3rem;
+  color: white;
+  text-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+  margin: 0;
+  position: relative;
+}
+
+/* Typing caret for main text */
+.typing-title::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: white;
+  margin-left: 4px;
+  animation: blink-cursor 0.7s infinite;
+  vertical-align: bottom;
+}
+
+/* === Subtext typing (with wrapping) === */
+.typing-subtext {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  color: #BD0927;
+  max-width: 800px;
+  line-height: 1.6;
+  opacity: 0.9;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  position: relative;
+}
+
+
+.typing-subtext::after {
+  content: "";
+  position: relative;
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background:  #BD0927;
+  margin-left: 4px;
+  animation: blink-cursor 0.7s infinite;
+  vertical-align: bottom;
+}
+
+/* --- Cursor blink --- */
+@keyframes blink-cursor {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* --- Button --- */
+.next-btn {
+  margin-top: 2rem;
+  padding: 0.9rem 2.2rem;
+  font-size: 1rem;
+  color: #00ffff;
+  background: transparent;
+  border: 2px solid #00ffff;
+  border-radius: 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.next-btn:hover {
+  color: #ff00ff;
+  border-color: #ff00ff;
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+  transform: scale(1.05);
+}
+
+/* --- Fade In --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
