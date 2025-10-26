@@ -1,0 +1,7 @@
+{
+  "name": "AI Career Coach",
+  "description": "An AI-powered application to help users practice for interviews with real-time speech analysis and get feedback on their resume's suitability for a job role.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
