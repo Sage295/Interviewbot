@@ -26,6 +26,7 @@ const MenuButton: React.FC = () => {
           
           <li><a href="/skillbuilder"> Skill Builder</a></li>
           <li><a href="/skillcheck"> Skill Check</a></li>
+          <li><a href="/About"> About</a></li>
         </ul>
       </div>
     </>
