@@ -1,0 +1,51 @@
+.matrix-bg {
+  position: fixed;
+  inset: 0;
+  background-color: #000;   /* solid black */
+  color: #00ff66;
+  font-family: "Courier New", monospace;
+  font-size: 0.95rem;
+  line-height: 1.6rem;
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+
+/* CRT scanlines overlay */
+.matrix-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 255, 100, 0.05),
+    rgba(0, 255, 100, 0.05) 1px,
+    transparent 3px,
+    transparent 4px
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  opacity: 0.2;
+  animation: crt-flicker 2s infinite steps(2, start);
+}
+
+/* every line sits normally; JS handles overflow trimming */
+.matrix-line {
+  white-space: nowrap;
+  margin-bottom: 2px;
+  opacity: 0.9;
+  text-shadow: 0 0 5px #00ff66, 0 0 10px #00ff66;
+  animation: fadeIn 0.3s ease;
+}
+
+/* remove per-line scroll animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 0.9; transform: translateY(0); }
+}
+
+/* gentle CRT flicker only on overlay */
+@keyframes crt-flicker {
+  0%, 50%, 100% { opacity: 0.25; }
+  25%, 75%      { opacity: 0.15; }
+}
