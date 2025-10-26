@@ -1,30 +1,197 @@
-/* Conversation output styling */
-.conversation-box {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  border-radius: 12px;
-  background: rgba(0, 255, 255, 0.05);
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
+
+.skillb-page {
+  color: white;
+  text-align: center;
+  min-height: 100vh;
+  background: radial-gradient(circle at center, #0f0f1f, #000);
+  overflow-x: hidden;
+  padding: 2rem;
+  font-family: "Michroma", sans-serif;
+  position: relative;
+}
+
+/* --- Header animation container --- */
+.skillb-header {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 5;
+  opacity: 0;
+  animation: appear-center 0.6s ease-out forwards;
+}
+
+/* When it moves to the top-left corner */
+.skillb-header.move-to-corner {
+  top: 10%;
+  left: 13%;
+  transform: translate(0, 0);
   text-align: left;
-  white-space: pre-wrap;
-  font-family: "Courier New", monospace;
+  transition: all 1.3s cubic-bezier(0.19, 1, 0.22, 1); /* smooth ease-out */
+}
+
+/* Main title */
+.skillb-title {
+  font-size: 2.8rem;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(0, 255, 200, 0.5);
+  margin: 0;
+  transition: all 1.3s ease-in-out;
+}
+
+/* RetroCruit mini label */
+.retrocruit-mini {
+  display: block;
+  font-size: 1rem;
+  color: rgba(0, 255, 200, 0.7);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(0, 255, 200, 0.3);
+}
+
+/* Page content fade-in */
+.skillb-content {
+  margin-top: 35vh;
+  max-width: 800px;
+  margin-inline: auto;
   line-height: 1.6;
-  animation: fadeIn 0.8s ease-out;
+  font-size: 1.1rem;
+  opacity: 0;
+  animation: content-rise 0.9s ease-out forwards 1s;
 }
 
-.conversation-loading {
-  margin-top: 2rem;
-  color: #00ffff;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
-  animation: pulse 1s infinite alternate;
+.skillb-content p {
+  margin-bottom: 2rem;
 }
 
-@keyframes pulse {
+/* --- Animations --- */
+@keyframes appear-center {
   from {
-    opacity: 0.6;
+    opacity: 0;
+    transform: translate(-50%, -40%);
   }
   to {
     opacity: 1;
+    transform: translate(-50%, -50%);
   }
+}
+
+@keyframes content-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* === HOLOGRAPHIC SIDEBAR (RIGHT SIDE) === */
+.holo-sidebar.right {
+  position: fixed;
+  top: 0;
+  right: 0; /* ✅ stays on the right side */
+  width: 260px;
+  height: 100vh;
+  background: rgba(0, 255, 255, 0.08);
+  border-left: 2px solid rgba(0, 255, 255, 0.5);
+  box-shadow: -2px 0 25px rgba(0, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  /* ✨ Slide-in animation */
+  animation: slide-in-right 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards,
+             holo-glow 2s infinite alternate 1.2s;
+}
+
+/* Slide-in from the right edge */
+@keyframes slide-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Subtle cyan glow shimmer */
+@keyframes holo-glow {
+  0% {
+    box-shadow: -2px 0 10px rgba(0, 255, 255, 0.2);
+  }
+  100% {
+    box-shadow: -2px 0 25px rgba(0, 255, 255, 0.6);
+  }
+}
+
+/* === Sidebar List Items === */
+.holo-sidebar.right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  width: 80%;
+}
+
+.holo-sidebar.right li {
+  color: #00ffff;
+  font-family: "Michroma", sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  margin: 1.8rem 0;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateX(40px);
+  animation: sidebar-item-in 0.7s forwards;
+}
+
+.holo-sidebar.right li:nth-child(1) {
+  animation-delay: 1.3s;
+}
+.holo-sidebar.right li:nth-child(2) {
+  animation-delay: 1.5s;
+}
+.holo-sidebar.right li:nth-child(3) {
+  animation-delay: 1.7s;
+}
+
+.holo-sidebar.right li:hover {
+  color: #ff00ff;
+  text-shadow: 0 0 15px rgba(255, 0, 255, 0.9);
+  transform: scale(1.05);
+}
+
+/* Items fade in with slide from right */
+@keyframes sidebar-item-in {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Push content to the left to make space for the sidebar */
+.skillb-content {
+  margin-right: 280px; /* ✅ make room for right bar */
+  margin-top: 30vh;
+  max-width: 800px;
+  margin-inline: auto;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  opacity: 0;
+  animation: content-rise 0.9s ease-out forwards 1s;
 }
