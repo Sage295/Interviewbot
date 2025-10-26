@@ -1,0 +1,20 @@
+.skill-page {
+  color: white;
+  text-align: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: radial-gradient(circle at center, #0f0f1f, #000);
+  overflow-x: hidden;
+}
+
+.skill-content {
+  margin-top: 3rem;
+  max-width: 800px;
+  margin-inline: auto;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.skill-content p {
+  opacity: 0.85;
+}
