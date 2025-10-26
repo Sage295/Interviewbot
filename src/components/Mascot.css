@@ -1,0 +1,35 @@
+.mascot {
+  position: fixed;
+  left: 5%;
+  top: -40%; /* start off-screen */
+  opacity: 0;
+  transition:
+    top 1.5s ease-out,
+    opacity 0.8s ease;
+  z-index: 10;
+}
+
+.mascot.visible {
+  top: 75%; /* drops into 3/4 of the screen */
+  opacity: 1;
+}
+
+.mascot-img {
+  width: 120px;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.4);
+}
+
+.mascot-bubble {
+  background: rgba(0, 255, 200, 0.15);
+  color: white;
+  border: 1px solid rgba(0, 255, 200, 0.5);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  margin-top: 10px;
+  width: 220px;
+  backdrop-filter: blur(4px);
+  font-family: "Michroma", sans-serif;
+}
