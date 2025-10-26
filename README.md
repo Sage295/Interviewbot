@@ -6,7 +6,7 @@
 
 This contains everything you need to run your app locally.
 
-View your app in AI Studio: https://ai.studio/apps/temp/1
+Launch the app: https://ai-career-coach-627757444105.us-west1.run.app/
 
 ## Run Locally
 
