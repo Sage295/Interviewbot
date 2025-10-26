@@ -8,10 +8,10 @@ import SkillB from "./pages/SkillB";
 import SkillC from "./pages/SkillC";
 import Conversation from "./pages/Conversation";
 import MenuButton from "./components/MenuButton";
-import VoiceListener from "./components/VoiceListener";   // 🎙️ Voice activation
 import Mascot from "./components/Mascot";  
 import RA from "./pages/RA";
-import TC from "./pages/TC";           
+import TC from "./pages/TC";    
+import About from "./pages/About";       
 
 
 function Home() {
@@ -21,12 +21,7 @@ function Home() {
   const [mascotVisible, setMascotVisible] = useState(false);
   const [textFaded, setTextFaded] = useState(false);
 
-  // 🎙️ Triggered by VoiceListener when user says "start" or "hello"
-  const handleVoiceTrigger = () => {
-    console.log("🎤 Voice triggered mascot!");
-    setTextFaded(true);
-    setTimeout(() => setMascotVisible(true), 800); // drop mascot slightly after fade
-  };
+
 
   useEffect(() => {
     bgCanvas();
@@ -169,11 +164,11 @@ function Home() {
       {/* Scrollable filler */}
       <div className="content"></div>
 
-      {/* ✅ Hologram buttons */}
+     
       <HologramButton
         side="left"
         text="Skill Builder"
-        subtitle="Need a confidence boost? Practice your skills with me to learn how to be the best you for an interview."
+        subtitle="Need a confidence boost? Practice your skills with me and learn how to bring out your best self in any interview."
         onClick={() => navigate("/skillbuilder")}
       />
       <HologramButton
@@ -183,8 +178,8 @@ function Home() {
         onClick={() => navigate("/skillcheck")}
       />
 
-      {/* 🎙️ Voice activation + 🤖 Mascot */}
-      <VoiceListener onVoiceTrigger={handleVoiceTrigger} />
+      
+      
       <Mascot visible={mascotVisible} />
     </div>
   );
@@ -201,6 +196,7 @@ export default function App() {
        <Route path="/ra" element={<RA />} />
        <Route path="/tc" element={<TC />} />
        <Route path="/skillcheck" element={<SkillC/>} />
+        <Route path="/About" element={<About/>} />
 
       </Routes>
     </Router>
