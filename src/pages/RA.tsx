@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Conversation.css"; // ✅ reuse same CSS for consistent style
+import "./RA.css"; 
 
 const ResumeAnalyzer: React.FC = () => {
   const firstText = " Welcome to Resume Analyzer";
@@ -12,13 +12,11 @@ const ResumeAnalyzer: React.FC = () => {
   const [step, setStep] = useState<1 | 2>(1);
   const [showNext, setShowNext] = useState(false);
   const [showRetro, setShowRetro] = useState(false);
+  const [showUploadBox, setShowUploadBox] = useState(false);
 
   const navigate = useNavigate();
 
-  // --- Navigate back to SkillBuilder ---
-  const goToSkillBuilder = () => {
-    navigate("/skillbuilder"); // ✅ matches your <Route path="/skillbuilder" ...>
-  };
+  const goToSkillBuilder = () => navigate("/skillbuilder");
 
   // --- Typing animation logic ---
   useEffect(() => {
@@ -27,7 +25,7 @@ const ResumeAnalyzer: React.FC = () => {
 
     if (step === 1) {
       setMainText("");
-      setShowRetro(true); // show RetroCruit when typing begins
+      setShowRetro(true);
     } else {
       setSubText("");
     }
@@ -44,7 +42,12 @@ const ResumeAnalyzer: React.FC = () => {
         index++;
         setTimeout(typeChar, 60);
       } else {
-        if (step === 1) setShowNext(true);
+        if (step === 1) {
+          setShowNext(true);
+        } else {
+          // ✅ Once second text finishes, show upload box after slight delay
+          setTimeout(() => setShowUploadBox(true), 500);
+        }
       }
     };
 
@@ -52,7 +55,6 @@ const ResumeAnalyzer: React.FC = () => {
     return () => clearTimeout(startTimer);
   }, [step]);
 
-  // --- Handle "Next →" click ---
   const handleNext = () => {
     setShowNext(false);
     setStep(2);
@@ -60,14 +62,12 @@ const ResumeAnalyzer: React.FC = () => {
 
   return (
     <>
-      {/* --- RetroCruit clickable label --- */}
       {showRetro && (
         <span className="retrocruit-top" onClick={goToSkillBuilder}>
           RetroCruit
         </span>
       )}
 
-      {/* --- Centered typing area --- */}
       <div className="conversation-page">
         <div className="conversation-center">
           <h1 className="typing-title">{mainText}</h1>
@@ -78,6 +78,12 @@ const ResumeAnalyzer: React.FC = () => {
             <button className="next-btn" onClick={handleNext}>
               Next →
             </button>
+          )}
+          {showUploadBox && (
+            <div className="upload-box fade-in">
+              <p>Drag & drop your resume here or click to upload</p>
+              <input type="file" accept=".pdf,.doc,.docx" />
+            </div>
           )}
         </div>
       </div>
